@@ -35,72 +35,70 @@ export const PrintLayout: React.FC<PrintLayoutProps> = ({ cards, fontFamily }) =
   return (
     <div className="print-only w-full bg-white" style={{ fontFamily }}>
       {processedChunks.map((chunk, pageIndex) => {
-        // Define exact positions for clarity based on user requirement
-        // Front: A1, A2, A3, A4
-        const A1 = chunk[0];
-        const A2 = chunk[1];
-        const A3 = chunk[2];
-        const A4 = chunk[3];
+        // User Requirement:
+        // Front Page Layout:
+        // [ A1 ] [ A2 ]
+        // [ A3 ] [ A4 ]
+        const frontPageItems = [chunk[0], chunk[1], chunk[2], chunk[3]];
 
-        // Back: B2, B1, B4, B3 (Mirrored horizontally)
-        // Since we are creating a grid that fills Left->Right, Top->Bottom:
-        // Slot 1 (Top-Left) gets B2
-        // Slot 2 (Top-Right) gets B1
-        // Slot 3 (Bottom-Left) gets B4
-        // Slot 4 (Bottom-Right) gets B3
-        const backPageOrder = [A2, A1, A4, A3];
+        // Back Page Layout (Mirrored for Long-Edge Duplex Printing):
+        // The top-left of the back page (B2) is behind the top-right of the front page (A2).
+        // [ B2 ] [ B1 ]
+        // [ B4 ] [ B3 ]
+        const backPageItems = [chunk[1], chunk[0], chunk[3], chunk[2]];
 
         return (
           <React.Fragment key={pageIndex}>
-            {/* FRONT PAGE */}
+            {/* FRONT PAGE (Terms) */}
             <div className="w-[210mm] h-[297mm] flex items-center justify-center page-break-after bg-white relative">
               {/* 
                   Grid Container 
                   border-l and border-t on container + border-r and border-b on items 
                   creates a perfect shared border grid.
+                  Using dashed gray lines as cutting guides.
               */}
               <div 
-                  className="grid grid-cols-2 grid-rows-2 border-l border-t border-black box-border"
+                  className="grid grid-cols-2 grid-rows-2 border-l border-t border-gray-400 border-dashed box-border"
                   style={{ width: GRID_WIDTH, height: GRID_HEIGHT }}
               >
-                {chunk.map((card, idx) => (
+                {frontPageItems.map((card, idx) => (
                   <div 
                     key={`front-${pageIndex}-${idx}`} 
-                    className="flex items-center justify-center p-6 text-center overflow-hidden relative border-r border-b border-black box-border"
+                    className="flex items-center justify-center p-6 text-center overflow-hidden relative border-r border-b border-gray-400 border-dashed box-border"
                   >
-                     <div className="break-words w-full max-h-full text-3xl font-medium leading-tight">
+                     <div className="break-words w-full max-h-full text-3xl font-medium leading-tight text-gray-900">
                         {card.front}
                      </div>
                   </div>
                 ))}
               </div>
               
-              {/* Page number hint for user */}
-              <div className="absolute bottom-4 right-8 text-xs text-gray-400">
+              {/* Footer / Page Number (Outside Cut Area) */}
+              <div className="absolute bottom-4 right-8 text-[10px] text-gray-400 font-sans">
                   Pagina {pageIndex * 2 + 1} (Voorkant - Begrippen)
               </div>
             </div>
 
-            {/* BACK PAGE */}
+            {/* BACK PAGE (Definitions) */}
             <div className="w-[210mm] h-[297mm] flex items-center justify-center page-break-after bg-white relative">
               <div 
-                  className="grid grid-cols-2 grid-rows-2 border-l border-t border-black box-border"
+                  className="grid grid-cols-2 grid-rows-2 border-l border-t border-gray-400 border-dashed box-border"
                   style={{ width: GRID_WIDTH, height: GRID_HEIGHT }}
               >
-                {backPageOrder.map((card, idx) => (
+                {backPageItems.map((card, idx) => (
                   <div 
                     key={`back-${pageIndex}-${idx}`} 
-                    className="flex items-center justify-center p-6 text-center overflow-hidden relative border-r border-b border-black box-border"
+                    className="flex items-center justify-center p-6 text-center overflow-hidden relative border-r border-b border-gray-400 border-dashed box-border"
                   >
                     <div className="break-words w-full max-h-full text-2xl text-gray-800 leading-snug">
-                        {card ? card.back : ''}
+                        {card.back}
                     </div>
                   </div>
                 ))}
               </div>
               
-               {/* Page number hint for user */}
-               <div className="absolute bottom-4 left-8 text-xs text-gray-400">
+               {/* Footer / Page Number (Outside Cut Area) */}
+               <div className="absolute bottom-4 left-8 text-[10px] text-gray-400 font-sans">
                   Pagina {pageIndex * 2 + 2} (Achterkant - Betekenissen)
               </div>
             </div>

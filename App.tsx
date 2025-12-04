@@ -53,7 +53,9 @@ function App() {
         { "Begrip": "Olifant", "Betekenis": "Het grootste landdier met een slurf." },
         { "Begrip": "Muis", "Betekenis": "Een klein knaagdier dat van kaas houdt." },
         { "Begrip": "Vogel", "Betekenis": "Een dier met veren dat eieren legt." },
-        { "Begrip": "Vis", "Betekenis": "Een dier dat onder water ademt via kieuwen." }
+        { "Begrip": "Vis", "Betekenis": "Een dier dat onder water ademt via kieuwen." },
+        { "Begrip": "Paard", "Betekenis": "Een edel dier dat kan galopperen." },
+        { "Begrip": "Koe", "Betekenis": "Een boerderijdier dat melk geeft en loeit." }
     ]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Flashcards");
@@ -147,12 +149,15 @@ function App() {
                     >
                         <FileDown size={20} /> Print / Opslaan als PDF
                     </button>
-                    <p className="text-xs text-center text-gray-500 leading-relaxed bg-blue-50 p-2 rounded border border-blue-100">
-                        <strong>Instructie:</strong><br/>
-                        1. Kies bestemming <strong>"Opslaan als PDF"</strong>.<br/>
-                        2. Zet marges op <strong>"Geen"</strong>.<br/>
-                        3. Vink "Achtergrondgrafieken" aan (indien nodig).
-                    </p>
+                    <div className="text-xs text-gray-500 leading-relaxed bg-blue-50 p-3 rounded-lg border border-blue-100">
+                        <p className="font-bold text-blue-900 mb-1">Print Instructies:</p>
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li>Bestemming: <strong>Opslaan als PDF</strong></li>
+                            <li>Marges: <strong>Geen</strong></li>
+                            <li>Dubbelzijdig: <strong>Lange zijde</strong></li>
+                            <li>Achtergrondgrafieken: <strong>Aan</strong></li>
+                        </ul>
+                    </div>
                   </div>
                 </div>
               </div>
