@@ -34,10 +34,10 @@ function App() {
 
   const handleDownloadPDF = (e: React.MouseEvent) => {
     e.preventDefault();
-    // Small timeout ensures any state updates or renders are complete before the print dialog takes over
+    // Timeout ensures fonts are loaded and layout is stable before print dialog
     setTimeout(() => {
         window.print();
-    }, 100);
+    }, 500);
   };
 
   const handleReset = () => {
@@ -48,11 +48,12 @@ function App() {
 
   const downloadTemplate = () => {
     const ws = XLSX.utils.json_to_sheet([
-        { "Begrip": "Hond", "Betekenis": "Een trouw huisdier" },
-        { "Begrip": "Kat", "Betekenis": "Een eigenzinnig huisdier" },
-        { "Begrip": "Auto", "Betekenis": "Voertuig op vier wielen" },
-        { "Begrip": "Boom", "Betekenis": "Een grote plant met een houten stam" },
-        { "Begrip": "Fiets", "Betekenis": "Tweewieler aangedreven door spierkracht" }
+        { "Begrip": "Hond", "Betekenis": "Een trouw huisdier dat blaft." },
+        { "Begrip": "Kat", "Betekenis": "Een eigenzinnig huisdier dat miauwt." },
+        { "Begrip": "Olifant", "Betekenis": "Het grootste landdier met een slurf." },
+        { "Begrip": "Muis", "Betekenis": "Een klein knaagdier dat van kaas houdt." },
+        { "Begrip": "Vogel", "Betekenis": "Een dier met veren dat eieren legt." },
+        { "Begrip": "Vis", "Betekenis": "Een dier dat onder water ademt via kieuwen." }
     ]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Flashcards");
@@ -148,9 +149,9 @@ function App() {
                     </button>
                     <p className="text-xs text-center text-gray-500 leading-relaxed bg-blue-50 p-2 rounded border border-blue-100">
                         <strong>Instructie:</strong><br/>
-                        1. Klik op de knop.<br/>
-                        2. Kies bestemming: <strong>"Opslaan als PDF"</strong>.<br/>
-                        3. Zet marges op <strong>"Geen"</strong>.
+                        1. Kies bestemming <strong>"Opslaan als PDF"</strong>.<br/>
+                        2. Zet marges op <strong>"Geen"</strong>.<br/>
+                        3. Vink "Achtergrondgrafieken" aan (indien nodig).
                     </p>
                   </div>
                 </div>
@@ -162,7 +163,7 @@ function App() {
                 <div className="flex justify-between items-center">
                     <h2 className="text-lg font-semibold text-gray-800">Voorbeeld (Eerste 4 kaarten)</h2>
                     <span className="text-sm text-gray-500 italic" style={{ fontFamily: selectedFont.family }}>
-                        Font voorbeeld: De snelle bruine vos springt...
+                        Font voorbeeld: De snelle bruine vos...
                     </span>
                 </div>
                 
@@ -170,7 +171,7 @@ function App() {
                     {cards.slice(0, 4).map((card, idx) => (
                         <div key={card.id} className="aspect-[3/2] flex flex-col shadow-sm rounded-lg overflow-hidden border border-gray-200 bg-white">
                             <div className="flex-1 bg-blue-50 flex items-center justify-center p-4 border-b border-gray-100">
-                                <span style={{ fontFamily: selectedFont.family }} className="text-center font-bold text-gray-800">
+                                <span style={{ fontFamily: selectedFont.family }} className="text-center font-bold text-gray-800 text-xl">
                                     {card.front}
                                 </span>
                             </div>
