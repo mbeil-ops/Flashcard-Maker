@@ -1,0 +1,5 @@
+{
+  "name": "Flashcard Maker",
+  "description": "Een app om dubbelzijdige flashcards te maken van Excel-bestanden. A4 formaat, snijlijnen en aanpasbare fonts.",
+  "requestFramePermissions": []
+}
